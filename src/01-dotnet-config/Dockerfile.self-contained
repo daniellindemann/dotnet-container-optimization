@@ -1,0 +1,42 @@
+FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
+
+ARG configuration=Release
+ARG runtime=alpine-x64
+
+WORKDIR /src
+
+COPY ["01-dotnet-config.csproj", "./"]
+RUN dotnet restore "01-dotnet-config.csproj" \
+    --runtime $runtime
+
+COPY . .
+RUN dotnet build "01-dotnet-config.csproj" -c $configuration \
+    --runtime $runtime \
+    --no-restore \
+    --self-contained true \
+    /p:PublishTrimmed=true \
+    /p:PublishSingleFile=true
+RUN dotnet publish "01-dotnet-config.csproj" -c $configuration -o /app/publish \
+    --runtime $runtime \
+    --no-restore \
+    --no-build \
+    --self-contained true \
+    /p:PublishTrimmed=true \
+    /p:PublishSingleFile=true
+
+# use self contained
+# https://hub.docker.com/_/microsoft-dotnet-aspnet/
+FROM mcr.microsoft.com/dotnet/runtime-deps:7.0-alpine AS final
+WORKDIR /app
+
+EXPOSE 5108
+
+ENV ASPNETCORE_URLS=http://*:5108
+
+# Creates a non-root user with an explicit UID and adds permission to access the /app folder
+# For more info, please refer to https://aka.ms/vscode-docker-dotnet-configure-containers
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+USER appuser
+
+COPY --from=build /app/publish .
+ENTRYPOINT ["./01-dotnet-config"]
