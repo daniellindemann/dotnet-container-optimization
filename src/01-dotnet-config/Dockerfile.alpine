@@ -25,6 +25,8 @@ ARG configuration=Release
 RUN dotnet publish "01-dotnet-config.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
+# HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+#     CMD (ps aux | grep dotnet | grep -v grep) || exit 1
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "01-dotnet-config.dll"]
