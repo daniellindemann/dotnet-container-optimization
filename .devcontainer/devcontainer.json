@@ -23,7 +23,9 @@
 		"vscode": {
 			"extensions": [
 				"ms-azuretools.vscode-docker",
-				"exiasr.hadolint"
+				"ms-dotnettools.csharp",
+				"exiasr.hadolint",
+				"ms-azuretools.vscode-bicep"
 			]
 		}
 	},
