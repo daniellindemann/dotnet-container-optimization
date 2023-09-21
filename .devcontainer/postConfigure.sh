@@ -42,6 +42,20 @@ NOTATION_VERSION=$(
     && tar -xvzf ./notation.tar.gz notation && sudo mv ./notation /usr/local/bin && rm ./notation.tar.gz
 echo ""
 
+echo "--- Install notation key vault plugin ---"
+NOTATION_KEYVAULT_PLUGIN_DIR="$HOME/.config/notation/plugins/azure-kv"
+NOTATION_KEYVAULT_PLUGIN_VERSION=$(
+ curl --silent "https://api.github.com/repos/Azure/notation-azure-kv/releases/latest" | \
+ grep '"tag_name":' | \
+ sed -E 's/.*"v([^"]+)".*/\1/' \
+)
+mkdir -p $NOTATION_KEYVAULT_PLUGIN_DIR \
+    && curl -L -o notation-azure-kv.tar.gz "https://github.com/Azure/notation-azure-kv/releases/download/v${NOTATION_KEYVAULT_PLUGIN_VERSION}/notation-azure-kv_${NOTATION_KEYVAULT_PLUGIN_VERSION}_linux_amd64.tar.gz" \
+    && tar xvzf notation-azure-kv.tar.gz -C $NOTATION_KEYVAULT_PLUGIN_DIR \
+    && rm ./notation-azure-kv.tar.gz
+notation plugin ls
+echo ""
+
 echo "--- Ensure local container registry ---"
 REGISTRY_CONTAINER_NAME='registry'
 if docker ps -a --format '{{.Names}}' | grep $REGISTRY_CONTAINER_NAME ; then
