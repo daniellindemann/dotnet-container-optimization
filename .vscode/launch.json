@@ -2,14 +2,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "01-dotnet-config",
+            "name": "SampleApp",
             "type": "coreclr",
             "request": "launch",
             "launchSettingsProfile": "http",
-            "preLaunchTask": "01-dotnet-config-build",
-            "program": "${workspaceFolder}/src/01-dotnet-config/bin/Debug/net7.0/01-dotnet-config.dll",
+            "preLaunchTask": "DotnetContainerOptimization.SampleApp-build",
+            "program": "${workspaceFolder}/src/DotnetContainerOptimization.SampleApp/bin/Debug/net7.0/DotnetContainerOptimization.SampleApp.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/01-dotnet-config",
+            "cwd": "${workspaceFolder}/src/DotnetContainerOptimization.SampleApp",
             "stopAtEntry": false,
             "serverReadyAction": {
                 "action": "openExternally",
@@ -26,7 +26,7 @@
             },
             "presentation": {
                 "hidden": false,
-                "group": "01-dotnet-config",
+                "group": "DotnetContainerOptimization.SampleApp",
                 "order": 10
             }
         },

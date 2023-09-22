@@ -1,6 +1,6 @@
 # uses Debian base image
 # https://hub.docker.com/_/microsoft-dotnet-aspnet/
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:7.0-alpine AS base
 WORKDIR /app
 EXPOSE 5108
 
@@ -14,17 +14,19 @@ USER appuser
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 ARG configuration=Release
 WORKDIR /src
-COPY ["01-dotnet-config.csproj", "./"]
-RUN dotnet restore "01-dotnet-config.csproj"
+COPY ["DotnetContainerOptimization.SampleApp.csproj", "./"]
+RUN dotnet restore "DotnetContainerOptimization.SampleApp.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "01-dotnet-config.csproj" -c $configuration -o /app/build
+RUN dotnet build "DotnetContainerOptimization.SampleApp.csproj" -c $configuration -o /app/build
 
 FROM build AS publish
 ARG configuration=Release
-RUN dotnet publish "01-dotnet-config.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "DotnetContainerOptimization.SampleApp.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
+# HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+#     CMD (ps aux | grep dotnet | grep -v grep) || exit 1
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "01-dotnet-config.dll"]
+ENTRYPOINT ["dotnet", "DotnetContainerOptimization.SampleApp.dll"]

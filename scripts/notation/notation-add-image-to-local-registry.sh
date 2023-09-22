@@ -1,11 +1,11 @@
 #!/bin/bash
 
-IMAGE_TO_SIGN='01-dotnet-config:1.0.0'
+IMAGE_TO_SIGN='sample-app:1.0.0'
 
 SCRIPT_DIR=$(dirname "$0")
 
 echo "--- Build image ---"
-$SCRIPT_DIR/../../src/01-dotnet-config/docker-build-default.sh -t localhost:5001/$IMAGE_TO_SIGN
+$SCRIPT_DIR/../../src/DotnetContainerOptimization.SampleApp/docker-build-default.sh -t localhost:5001/$IMAGE_TO_SIGN
 
 echo "--- Push image ---"
 docker push localhost:5001/$IMAGE_TO_SIGN

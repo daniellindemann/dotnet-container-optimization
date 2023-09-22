@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{38E356BF-6EDB-486E-9A85-9D562D4979D7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{17EA3075-D2C2-45CD-B6F9-C5A085D78727}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01-dotnet-config", "src\01-dotnet-config\01-dotnet-config.csproj", "{CD6003A1-0444-415C-A8D0-D9954E789446}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetContainerOptimization.SampleApp", "src\DotnetContainerOptimization.SampleApp\DotnetContainerOptimization.SampleApp.csproj", "{01FDB2AE-E619-4C07-BE90-215515E70806}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,12 +16,12 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CD6003A1-0444-415C-A8D0-D9954E789446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CD6003A1-0444-415C-A8D0-D9954E789446}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD6003A1-0444-415C-A8D0-D9954E789446}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD6003A1-0444-415C-A8D0-D9954E789446}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01FDB2AE-E619-4C07-BE90-215515E70806}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01FDB2AE-E619-4C07-BE90-215515E70806}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01FDB2AE-E619-4C07-BE90-215515E70806}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01FDB2AE-E619-4C07-BE90-215515E70806}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{CD6003A1-0444-415C-A8D0-D9954E789446} = {38E356BF-6EDB-486E-9A85-9D562D4979D7}
+		{01FDB2AE-E619-4C07-BE90-215515E70806} = {17EA3075-D2C2-45CD-B6F9-C5A085D78727}
 	EndGlobalSection
 EndGlobal

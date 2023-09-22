@@ -5,18 +5,18 @@ ARG runtime=alpine-x64
 
 WORKDIR /src
 
-COPY ["01-dotnet-config.csproj", "./"]
-RUN dotnet restore "01-dotnet-config.csproj" \
+COPY ["DotnetContainerOptimization.SampleApp.csproj", "./"]
+RUN dotnet restore "DotnetContainerOptimization.SampleApp.csproj" \
     --runtime $runtime
 
 COPY . .
-RUN dotnet build "01-dotnet-config.csproj" -c $configuration \
+RUN dotnet build "DotnetContainerOptimization.SampleApp.csproj" -c $configuration \
     --runtime $runtime \
     --no-restore \
     --self-contained true \
     /p:PublishTrimmed=true \
     /p:PublishSingleFile=true
-RUN dotnet publish "01-dotnet-config.csproj" -c $configuration -o /app/publish \
+RUN dotnet publish "DotnetContainerOptimization.SampleApp.csproj" -c $configuration -o /app/publish \
     --runtime $runtime \
     --no-restore \
     --no-build \
@@ -39,4 +39,4 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 USER appuser
 
 COPY --from=build /app/publish .
-ENTRYPOINT ["./01-dotnet-config"]
+ENTRYPOINT ["./DotnetContainerOptimization.SampleApp"]

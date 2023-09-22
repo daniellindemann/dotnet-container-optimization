@@ -1,4 +1,4 @@
-using DotnetContainerOptimization.DotnetConfig.Options;
+using DotnetContainerOptimization.SampleApp.Options;
 
 using Microsoft.Extensions.Logging.Console;
 using Microsoft.Extensions.Options;

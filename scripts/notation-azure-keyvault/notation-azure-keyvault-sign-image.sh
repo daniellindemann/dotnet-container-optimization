@@ -18,7 +18,7 @@ CERT_PATH="${7:-$SCRIPT_DIR/$CERT_NAME.pem}"
 # Existing full domain of the ACR
 REGISTRY=$([[ $ACR_NAME == *.azurecr.io ]] && echo $ACR_NAME || echo "$ACR_NAME.azurecr.io")
 # Container name inside ACR where image will be stored
-REPO="${3:-01-dotnet-config}"
+REPO="${3:-sample-app}"
 TAG="${4:-1.0.0}"
 IMAGE=$REGISTRY/${REPO}:$TAG
 
@@ -64,7 +64,7 @@ echo ""
 
 echo "--- Sign image with notation"
 az acr login --name $ACR_NAME
-$SCRIPT_DIR/../../src/01-dotnet-config/docker-build-default.sh -t "$REGISTRY/${REPO}:$TAG"
+$SCRIPT_DIR/../../src/DotnetContainerOptimization.SampleApp/docker-build-default.sh -t "$REGISTRY/${REPO}:$TAG"
 docker push $REGISTRY/${REPO}:$TAG
 sleep 3
 DIGEST=$(az acr repository show -n $ACR_NAME -t "${REPO}:$TAG" --query "digest" -o tsv)

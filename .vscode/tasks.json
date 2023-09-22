@@ -2,38 +2,38 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "01-dotnet-config-build",
+            "label": "DotnetContainerOptimization.SampleApp-build",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/01-dotnet-config/01-dotnet-config.csproj",
+                "${workspaceFolder}/src/DotnetContainerOptimization.SampleApp/DotnetContainerOptimization.SampleApp.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "01-dotnet-config-publish",
+            "label": "DotnetContainerOptimization.SampleApp-publish",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/src/01-dotnet-config/01-dotnet-config.csproj",
+                "${workspaceFolder}/src/DotnetContainerOptimization.SampleApp/DotnetContainerOptimization.SampleApp.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "01-dotnet-config-watch",
+            "label": "DotnetContainerOptimization.SampleApp-watch",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/src/01-dotnet-config/01-dotnet-config.csproj"
+                "${workspaceFolder}/src/DotnetContainerOptimization.SampleApp/DotnetContainerOptimization.SampleApp.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

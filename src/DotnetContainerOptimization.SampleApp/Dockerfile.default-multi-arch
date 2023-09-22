@@ -17,21 +17,21 @@ ARG TARGETARCH
 RUN echo "Target architecture: ${TARGETARCH}"
 ARG configuration=Release
 WORKDIR /src
-COPY ["01-dotnet-config.csproj", "./"]
-RUN dotnet restore "01-dotnet-config.csproj" \
+COPY ["DotnetContainerOptimization.SampleApp.csproj", "./"]
+RUN dotnet restore "DotnetContainerOptimization.SampleApp.csproj" \
     -a $TARGETARCH
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "01-dotnet-config.csproj" -c $configuration -o /app/build \
+RUN dotnet build "DotnetContainerOptimization.SampleApp.csproj" -c $configuration -o /app/build \
     -a $TARGETARCH
 
 FROM build AS publish
 ARG TARGETARCH
 ARG configuration=Release
-RUN dotnet publish "01-dotnet-config.csproj" -c $configuration -o /app/publish /p:UseAppHost=false \
+RUN dotnet publish "DotnetContainerOptimization.SampleApp.csproj" -c $configuration -o /app/publish /p:UseAppHost=false \
     -a $TARGETARCH
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "01-dotnet-config.dll"]
+ENTRYPOINT ["dotnet", "DotnetContainerOptimization.SampleApp.dll"]

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-trivy image 01-dotnet-config-alpine:1.0.0 --severity HIGH,CRITICAL
+trivy image sample-app:1.0.0 --severity HIGH,CRITICAL

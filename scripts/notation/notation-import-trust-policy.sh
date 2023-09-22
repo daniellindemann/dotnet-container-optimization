@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE_TO_SIGN='localhost:5001/01-dotnet-config:1.0.0'   # it's better practice to use digest
+IMAGE_TO_SIGN='localhost:5001/sample-app:1.0.0'   # it's better practice to use digest
 
 SCRIPT_DIR=$(dirname "$0")
 CERT_CA="dlindemann.dev"

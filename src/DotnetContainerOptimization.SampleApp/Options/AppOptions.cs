@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace DotnetContainerOptimization.DotnetConfig.Options;
+namespace DotnetContainerOptimization.SampleApp.Options;
 
 public class AppOptions
 {

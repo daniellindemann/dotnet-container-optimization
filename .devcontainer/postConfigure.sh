@@ -28,7 +28,7 @@ TRIVY_VERSION=$(
  sed -E 's/.*"v([^"]+)".*/\1/' \
 )
 curl -sfL -o trivy_install.sh https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh && chmod +x ./trivy_install.sh
-sudo ./trivy_install.sh -b /usr/local/bin $TRIVY_VERSION
+sudo ./trivy_install.sh -b /usr/local/bin v$TRIVY_VERSION
 rm ./trivy_install.sh
 echo ""
 
