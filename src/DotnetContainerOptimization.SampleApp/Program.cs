@@ -1,3 +1,5 @@
+using DotnetContainerOptimization.SampleApp.Dto.Responses;
+using DotnetContainerOptimization.SampleApp.Helper;
 using DotnetContainerOptimization.SampleApp.Options;
 
 using Microsoft.Extensions.Logging.Console;
@@ -34,6 +36,9 @@ builder.Services.AddOptions<AppOptions>()
 // https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks?view=aspnetcore-7.0
 builder.Services.AddHealthChecks();
 
+// add other services
+builder.Services.AddSingleton<OsInformationRetriever>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 if (builder.Environment.IsDevelopment())
 {
@@ -68,31 +73,15 @@ app.MapGet("/hello", (IOptions<AppOptions> appOptions, ILogger<Program> logger) 
 .WithName("Hello")
 .WithOpenApi();
 
-var summaries = new[]
+app.MapGet("/arch", (OsInformationRetriever osInformationRetriever, ILogger<Program> logger) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    logger.LogInformation("Return architecture");
+    return new ArchitectureInfo(osInformationRetriever.GetOsString(),
+        osInformationRetriever.GetArchitecture());
 })
-.WithName("GetWeatherForecast")
+.WithName("Arch")
 .WithOpenApi();
 
 app.MapHealthChecks("/healthz");
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
