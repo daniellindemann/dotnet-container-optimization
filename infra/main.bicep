@@ -52,3 +52,7 @@ resource roleAssignmentKeyVaultAdministrator 'Microsoft.Authorization/roleAssign
     principalType: 'User'
   }
 }
+
+output keyVaultName string = keyVault.name
+output acrName string = containerRegistry.name
+output acrLoginServer string = containerRegistry.properties.loginServer

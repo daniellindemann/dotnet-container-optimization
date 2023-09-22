@@ -3,6 +3,8 @@
 LOCATION="${1:-northeurope}"
 RG_NAME="${2:-rg-container-optimization-neu}"
 
+SCRIPT_DIR=$(dirname "$0")
+
 if ! command -v az &> /dev/null; then
     echo "Install Azure CLI: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli"
     exit 1
@@ -20,6 +22,10 @@ echo "Create resource group $RG_NAME"
 az group create -l $LOCATION -n $RG_NAME
 
 echo "Deploy"
-az deployment group create --name azuredeploy --resource-group $RG_NAME --template-file main.bicep --parameters userObjectId="$AZ_USER_OBJECT_ID"
+az deployment group create --name azuredeploy --resource-group $RG_NAME --template-file $SCRIPT_DIR/main.bicep --parameters userObjectId="$AZ_USER_OBJECT_ID"
 
-
+echo "Get outputs"
+DEPLOYMENT_OUTPUT=$(az deployment group show --name azuredeploy --resource-group $RG_NAME --query "properties.outputs" --output json)
+echo "rgName: $RG_NAME"
+echo "acrName: $(echo $DEPLOYMENT_OUTPUT | jq -r '.acrName.value')"
+echo "acrLoginServer: $(echo $DEPLOYMENT_OUTPUT | jq -r '.acrLoginServer.value')"
