@@ -7,6 +7,7 @@
 
 
 SCRIPT_DIR=$(dirname "$0")
+APP_DIR=$SCRIPT_DIR/../../src/DotnetContainerOptimization.SampleApp
 docker buildx build $@ \
     --platform linux/amd64,linux/arm64 \
-    -t sample-app:1.0.0 -t sample-app:latest -f $SCRIPT_DIR/Dockerfile.default-multi-arch $SCRIPT_DIR
+    -t sample-app:1.0.0 -t sample-app:latest -f $APP_DIR/Dockerfile.default-multi-arch $APP_DIR
