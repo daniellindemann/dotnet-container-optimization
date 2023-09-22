@@ -109,7 +109,6 @@
 - Run dockle again
 
 ---
----
 
 ## Non-root user
 
@@ -179,7 +178,6 @@
     - Explain [`notation-azure-keyvault-sign-image.sh`](scripts/notation-azure-keyvault/notation-azure-keyvault-sign-image.sh)
     - Run [`notation-azure-keyvault-sign-image.sh`](scripts/notation-azure-keyvault/notation-azure-keyvault-sign-image.sh)
 
----
 ---
 
 # Build Multi-arch image
