@@ -28,8 +28,8 @@ else
 }
 
 // Add custom configurations that can be changed by environment settings
-builder.Services.AddOptions<AppOptions>()
-    .Bind(builder.Configuration.GetSection(AppOptions.PropertyName))
+builder.Services.AddOptions<GreetingsOptions>()
+    .Bind(builder.Configuration.GetSection(GreetingsOptions.PropertyName))
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
@@ -65,10 +65,10 @@ app.UseHttpsRedirection();
 
 app.UseCors();  // use cors
 
-app.MapGet("/hello", (IOptions<AppOptions> appOptions, ILogger<Program> logger) =>
+app.MapGet("/hello", (IOptions<GreetingsOptions> appOptions, ILogger<Program> logger) =>
 {
     logger.LogInformation("Return hello");
-    return $"Hello {appOptions.Value.Name}";
+    return $"Hello {appOptions.Value.To}";
 })
 .WithName("Hello")
 .WithOpenApi();
