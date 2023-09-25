@@ -32,14 +32,14 @@
     - Run:
 
         ```bash
-        docker run --rm -it -p 5108:5108 -e APP__NAME=guys sample-app:1.0.0
+        docker run --rm -it -p 5108:5108 -e Greetings__To=guys sample-app:1.0.0
         ```
 
 - Update application host config (kestrel)
     - Run:
 
         ```bash
-        docker run --rm -it -p 5108:8222 -e ASPNETCORE_URLS=http://+:8222 -e APP__NAME='old grumpy cat' sample-app:1.0.0
+        docker run --rm -it -p 5108:8222 -e ASPNETCORE_URLS=http://+:8222 -e Greetings__To='old grumpy cat' sample-app:1.0.0
         ```
 
     - See <https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/web-host?view=aspnetcore-7.0#server-urls>
@@ -48,7 +48,7 @@
 
 - Compare [`Dockerfile.default`](src/DotnetContainerOptimization.SampleApp/Dockerfile.default) with [`Dockerfile.alpine`](src/DotnetContainerOptimization.SampleApp/Dockerfile.alpine)
     - Show differences
-- Build [`Dockerfile.default`]()
+- Build [`Dockerfile.default`](src/DotnetContainerOptimization.SampleApp/Dockerfile.default)
     - Build:
     
         ```bash
