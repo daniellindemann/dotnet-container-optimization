@@ -4,7 +4,7 @@ IS_ARM=$(if [[ $(uname -m) == 'aarch64' || $(uname -m) == "amd64" ]]; then echo 
 
 # install dockle
 echo "--- Install dockle ---"
-DOCKLE_DOWNLOAD_FILE_SUFFIX=$(if [[ $IS_ARM ]]; then echo 'Linux-ARM64'; else echo 'Linux-64bit'; fi)
+DOCKLE_DOWNLOAD_FILE_SUFFIX=$(if [[ $IS_ARM = true ]]; then echo 'Linux-ARM64'; else echo 'Linux-64bit'; fi)
 DOCKLE_VERSION=$(
  curl --silent "https://api.github.com/repos/goodwithtech/dockle/releases/latest" | \
  grep '"tag_name":' | \
@@ -15,7 +15,7 @@ echo ""
 
 # install hadolint
 echo "--- Install hadolint ---"
-HADOLINT_DOWNLOAD_FILE_SUFFIX=$(if [[ $IS_ARM ]]; then echo 'Linux-arm64'; else echo 'Linux-x86_64'; fi)
+HADOLINT_DOWNLOAD_FILE_SUFFIX=$(if [[ $IS_ARM = true ]]; then echo 'Linux-arm64'; else echo 'Linux-x86_64'; fi)
 HADOLINT_VERSION=$(
  curl --silent "https://api.github.com/repos/hadolint/hadolint/releases/latest" | \
  grep '"tag_name":' | \
@@ -38,7 +38,7 @@ echo ""
 
 # install notation cli
 echo "--- Install notation cli ---"
-NOTATION_DOWNLOAD_FILE_SUFFIX=$(if [[ $IS_ARM ]]; then echo 'linux_arm64'; else echo 'linux_amd64'; fi)
+NOTATION_DOWNLOAD_FILE_SUFFIX=$(if [[ $IS_ARM = true ]]; then echo 'linux_arm64'; else echo 'linux_amd64'; fi)
 NOTATION_VERSION=$(
  curl --silent "https://api.github.com/repos/notaryproject/notation/releases/latest" | \
  grep '"tag_name":' | \
@@ -48,7 +48,7 @@ NOTATION_VERSION=$(
 echo ""
 
 echo "--- Install notation key vault plugin ---"
-NOTATION_KEYVAULT_PLUGIN_DOWNLOAD_FILE_SUFFIX=$(if [[ $IS_ARM ]]; then echo 'linux_arm64'; else echo 'linux_amd64'; fi)
+NOTATION_KEYVAULT_PLUGIN_DOWNLOAD_FILE_SUFFIX=$(if [[ $IS_ARM = true ]]; then echo 'linux_arm64'; else echo 'linux_amd64'; fi)
 NOTATION_KEYVAULT_PLUGIN_DIR="$HOME/.config/notation/plugins/azure-kv"
 NOTATION_KEYVAULT_PLUGIN_VERSION=$(
  curl --silent "https://api.github.com/repos/Azure/notation-azure-kv/releases/latest" | \
@@ -63,7 +63,7 @@ notation plugin ls
 echo ""
 
 echo "--- Install bicep ---"
-if [[ $(uname -m) == 'aarch64' || $(uname -m) == "amd64" ]]; then
+if [[ $IS_ARM = true ]]; then
     echo "Yep, it's an arm64 machine"
     BICEP_VERSION=$(
         curl --silent "https://api.github.com/repos/Azure/bicep/releases/latest" | \
