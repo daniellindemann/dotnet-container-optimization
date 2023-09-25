@@ -19,7 +19,8 @@
 		},
 		"ghcr.io/devcontainers-contrib/features/fzf:1": {
 			"version": "latest"
-		}
+		},
+        "ghcr.io/stuartleeks/dev-container-features/azure-cli-persistence:0": {}
 	},
 	// Configure tool-specific properties.
 	"customizations": {
