@@ -64,7 +64,7 @@ echo ""
 
 echo "--- Sign image with notation"
 az acr login --name $ACR_NAME
-$SCRIPT_DIR/../../src/DotnetContainerOptimization.SampleApp/docker-build-default.sh -t "$REGISTRY/${REPO}:$TAG"
+$SCRIPT_DIR/../docker/docker-build-default.sh -t "$REGISTRY/${REPO}:$TAG"
 docker push $REGISTRY/${REPO}:$TAG
 sleep 3
 DIGEST=$(az acr repository show -n $ACR_NAME -t "${REPO}:$TAG" --query "digest" -o tsv)

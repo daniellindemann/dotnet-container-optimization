@@ -27,5 +27,6 @@ az deployment group create --name azuredeploy --resource-group $RG_NAME --templa
 echo "Get outputs"
 DEPLOYMENT_OUTPUT=$(az deployment group show --name azuredeploy --resource-group $RG_NAME --query "properties.outputs" --output json)
 echo "rgName: $RG_NAME"
+echo "keyVaultName: $(echo $DEPLOYMENT_OUTPUT | jq -r '.keyVaultName.value')"
 echo "acrName: $(echo $DEPLOYMENT_OUTPUT | jq -r '.acrName.value')"
 echo "acrLoginServer: $(echo $DEPLOYMENT_OUTPUT | jq -r '.acrLoginServer.value')"
