@@ -1,7 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
 
+ARG TARGETARCH
 ARG configuration=Release
-ARG runtime=alpine-x64
+ARG runtime=alpine-${TARGETARCH}
 
 WORKDIR /src
 
