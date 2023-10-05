@@ -4,7 +4,7 @@ This project shows how .NET applications can be optimized to run inside containe
 
 ## Presentation
 
-TODO
+[Optimize Container Images for .NET Applications](https://speakerdeck.com/daniellindemann/optimize-container-images-for-net-applications)
 
 ## Prerequisites
 
