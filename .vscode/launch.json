@@ -7,7 +7,7 @@
             "request": "launch",
             "launchSettingsProfile": "http",
             "preLaunchTask": "DotnetContainerOptimization.SampleApp-build",
-            "program": "${workspaceFolder}/src/DotnetContainerOptimization.SampleApp/bin/Debug/net7.0/DotnetContainerOptimization.SampleApp.dll",
+            "program": "${workspaceFolder}/src/DotnetContainerOptimization.SampleApp/bin/Debug/net8.0/DotnetContainerOptimization.SampleApp.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/DotnetContainerOptimization.SampleApp",
             "stopAtEntry": false,

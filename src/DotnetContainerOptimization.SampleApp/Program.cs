@@ -77,7 +77,8 @@ app.MapGet("/arch", (OsInformationRetriever osInformationRetriever, ILogger<Prog
 {
     logger.LogInformation("Return architecture");
     return new ArchitectureInfo(osInformationRetriever.GetOsString(),
-        osInformationRetriever.GetArchitecture());
+        osInformationRetriever.GetArchitecture(),
+        osInformationRetriever.GetUnameString());
 })
 .WithName("Arch")
 .WithOpenApi();
