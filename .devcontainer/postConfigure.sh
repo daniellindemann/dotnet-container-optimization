@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IS_ARM=$(if [[ $(uname -m) == 'aarch64' || $(uname -m) == "amd64" ]]; then echo true; else echo false; fi)
+IS_ARM=$(if [[ $(uname -m) == 'aarch64' || $(uname -m) == "arm64" ]]; then echo true; else echo false; fi)
 
 # install dockle
 echo "--- Install dockle ---"
