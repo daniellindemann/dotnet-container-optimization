@@ -1,8 +1,8 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 
 ARG TARGETARCH
 ARG configuration=Release
-ARG runtime=alpine-${TARGETARCH}
+ARG runtime=linux-${TARGETARCH}
 
 WORKDIR /src
 
@@ -27,7 +27,7 @@ RUN dotnet publish "DotnetContainerOptimization.SampleApp.csproj" -c $configurat
 
 # use self contained
 # https://hub.docker.com/_/microsoft-dotnet-aspnet/
-FROM mcr.microsoft.com/dotnet/runtime-deps:7.0-alpine AS final
+FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-alpine AS final
 WORKDIR /app
 
 EXPOSE 5108

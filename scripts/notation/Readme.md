@@ -23,7 +23,7 @@
 4. Create a trust policy to verify against
 
     ```bash
-    notation-import-trust-policy.sh
+    ./notation-import-trust-policy.sh
     ```
 
 5. Verify the image

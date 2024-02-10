@@ -1,28 +1,14 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-
+# Build with default .net sdk on jammy
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-jammy AS build
+ARG TARGETARCH
 ARG configuration=Release
-ARG runtime=linux-x64
-
 WORKDIR /src
 
-COPY ["DotnetContainerOptimization.SampleApp.csproj", "./"]
-RUN dotnet restore "DotnetContainerOptimization.SampleApp.csproj" \
-    --runtime $runtime
+COPY DotnetContainerOptimization.SampleApp.csproj .
+RUN dotnet restore -a $TARGETARCH
 
-COPY . .
-RUN dotnet build "DotnetContainerOptimization.SampleApp.csproj" -c $configuration \
-    --runtime $runtime \
-    --no-restore \
-    --self-contained true \
-    /p:PublishTrimmed=true \
-    /p:PublishSingleFile=true
-RUN dotnet publish "DotnetContainerOptimization.SampleApp.csproj" -c $configuration -o /app/publish \
-    --runtime $runtime \
-    --no-restore \
-    --no-build \
-    --self-contained true \
-    /p:PublishTrimmed=true \
-    /p:PublishSingleFile=true
+COPY ./ .
+RUN dotnet publish -c $configuration -a $TARGETARCH -o /app --self-contained
 
 # chiseled ubuntu
 
@@ -31,13 +17,16 @@ RUN dotnet publish "DotnetContainerOptimization.SampleApp.csproj" -c $configurat
 #   No package manager or shell installed.
 #   Uses a non-root user by default.
 
-# https://hub.docker.com/_/microsoft-dotnet-aspnet/
-FROM mcr.microsoft.com/dotnet/nightly/runtime-deps:7.0-jammy-chiseled AS final
-WORKDIR /app
+# https://github.com/dotnet/dotnet-docker/blob/main/documentation/ubuntu-chiseled.md
 
+# Build image with jammy chiseled
+FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-jammy-chiseled
+
+WORKDIR /app
 EXPOSE 5108
+USER $APP_UID
 
 ENV ASPNETCORE_URLS=http://*:5108
 
-COPY --from=build /app/publish .
+COPY --from=build /app .
 ENTRYPOINT ["./DotnetContainerOptimization.SampleApp"]

@@ -1,6 +1,24 @@
 #!/bin/bash
 
-IS_ARM=$(if [[ $(uname -m) == 'aarch64' || $(uname -m) == "amd64" ]]; then echo true; else echo false; fi)
+IS_ARM=$(if [[ $(uname -m) == 'aarch64' || $(uname -m) == "arm64" ]]; then echo true; else echo false; fi)
+
+# enable docker expermental features
+echo "--- Enable docker container snapshotter for copacetic ---"
+echo '{
+  "builder": {
+    "gc": {
+      "defaultKeepStorage": "20GB",
+      "enabled": true
+    }
+  },
+  "experimental": false,
+  "features": {
+    "containerd-snapshotter": true
+  }
+}' | sudo tee /etc/docker/daemon.json > /dev/null
+sudo pkill dockerd && sudo pkill containerd
+. /usr/local/share/docker-init.sh
+echo ""
 
 # install dockle
 echo "--- Install dockle ---"
@@ -34,6 +52,17 @@ TRIVY_VERSION=$(
 curl -sfL -o trivy_install.sh https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh && chmod +x ./trivy_install.sh
 sudo ./trivy_install.sh -b /usr/local/bin v$TRIVY_VERSION
 rm ./trivy_install.sh
+echo ""
+
+## install copacetic
+echo "--- Install copacetic ---"
+COPA_VERSION_DOWNLOAD_FILE_SUFFIX=$(if [[ $IS_ARM = true ]]; then echo 'linux_arm64'; else echo 'linux_amd64'; fi)
+COPA_VERSION=$(
+ curl --silent "https://api.github.com/repos/project-copacetic/copacetic/releases/latest" | \
+ grep '"tag_name":' | \
+ sed -E 's/.*"v([^"]+)".*/\1/' \
+) && curl -L -o copa.tar.gz "https://github.com/project-copacetic/copacetic/releases/download/v${COPA_VERSION}/copa_${COPA_VERSION}_${COPA_VERSION_DOWNLOAD_FILE_SUFFIX}.tar.gz" \
+    && tar -xvzf ./copa.tar.gz copa && sudo mv ./copa /usr/local/bin && rm ./copa.tar.gz
 echo ""
 
 # install notation cli
