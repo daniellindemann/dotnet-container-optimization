@@ -35,7 +35,7 @@ public class OsInformationRetriever
             UseShellExecute = false,
             RedirectStandardOutput = true,
             CreateNoWindow = true
-        });
+        })!;
 
         unameProcess.WaitForExit();
         return unameProcess.StandardOutput.ReadToEnd();
