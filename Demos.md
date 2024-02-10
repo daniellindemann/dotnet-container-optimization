@@ -137,6 +137,27 @@
         ```
         > See [scripts/trivy/trivy-image-alpine-severity.sh](scripts/trivy/trivy-image-alpine-severity.sh)
 
+## Patch images with copacetic
+
+- Run `trivy` against default image
+    - Run:
+        ```bash
+        trivy image sample-app:1.0.0
+        ```
+        > See [scripts/trivy/trivy-image-default.sh](scripts/trivy/trivy-image-default.sh)
+- Run `trivy` to create vulnarability scan result and `copacetic` to patch the image
+    - Run:
+        ```bash
+        trivy image --vuln-type os --ignore-unfixed -f json -o report.json sample-app:1.0.0
+        copa patch -i sample-app:1.0.0 -r report.json
+        ```
+        > See [scripts/copacetic/copa-patch.sh](scripts/copacetic/copa-patch.sh)
+- Run `trivy` against patched image
+    - Run:
+        ```bash
+        trivy image sample-app:1.0.0-patched
+        ```
+        
 ## Sign images
 
 - Ensure local registry is running
