@@ -59,30 +59,36 @@ cat <<EOF > $SCRIPT_DIR/cert_policy.json
     }
 }
 EOF
-az keyvault certificate create -n $CERT_NAME --vault-name $AKV_NAME -p @$SCRIPT_DIR/cert_policy.json
+KV_CERT_EXPIRES=$(az keyvault certificate show --name $CERT_NAME --vault-name $AKV_NAME --query 'attributes.expires' -o tsv 2> /dev/null)
+TIMESTAMP_NOW=$(date +%s)
+TIMESTAMP_EXPIRES=$(date -d $KV_CERT_EXPIRES +%s 2> /dev/null || echo 0)
+if [ $TIMESTAMP_EXPIRES -gt $TIMESTAMP_NOW ]; then
+    echo "Certificate $CERT_NAME already exists and is valid until $KV_CERT_EXPIRES"
+else
+    az keyvault certificate create -n $CERT_NAME --vault-name $AKV_NAME -p @$SCRIPT_DIR/cert_policy.json
+fi
 echo ""
 
 echo "--- Sign image with notation"
 az acr login --name $ACR_NAME
-$SCRIPT_DIR/../docker/docker-build-default.sh -t "$REGISTRY/${REPO}:$TAG"
-docker push $REGISTRY/${REPO}:$TAG
+$SCRIPT_DIR/../docker/docker-build-default-multi-arch.sh --no-default-tags -t "$REGISTRY/${REPO}:$TAG" --push
 sleep 3
 DIGEST=$(az acr repository show -n $ACR_NAME -t "${REPO}:$TAG" --query "digest" -o tsv)
-IMAGE=$REGISTRY/${REPO}@$DIGEST
+SIGN_IMAGE=$REGISTRY/${REPO}@$DIGEST
 KEY_ID=$(az keyvault certificate show -n $CERT_NAME --vault-name $AKV_NAME --query 'kid' -o tsv)
 
-notation sign --signature-format cose --id $KEY_ID --plugin azure-kv --plugin-config self_signed=true $IMAGE
+notation sign --signature-format cose --id $KEY_ID --plugin azure-kv --plugin-config self_signed=true $SIGN_IMAGE
 sleep 3
-notation ls $IMAGE
+notation ls $SIGN_IMAGE
 echo ""
 
 read -p "Press any key to contiue to image verification ..."
 
 echo "--- Verify image"
-rm ./scripts/notation-azure-keyvault/dlindemann-dev.pem 2> /dev/null
+rm $SCRIPT_DIR/$CERT_NAME.pem 2> /dev/null
 az keyvault certificate download --name $CERT_NAME --vault-name $AKV_NAME --file $CERT_PATH
 STORE_TYPE="ca"
-STORE_NAME="dlindemann.dev"
+STORE_NAME=$CERT_NAME
 
 notation cert delete --type $STORE_TYPE --store $STORE_NAME -a -y 2> /dev/null
 notation cert add --type $STORE_TYPE --store $STORE_NAME $CERT_PATH
@@ -108,4 +114,4 @@ cat <<EOF > $SCRIPT_DIR/trustpolicy.json
 EOF
 notation policy import $SCRIPT_DIR/trustpolicy.json
 notation policy show
-notation verify $IMAGE
+notation verify $SIGN_IMAGE

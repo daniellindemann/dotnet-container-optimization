@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 LOCATION="${1:-northeurope}"
 RG_NAME="${2:-rg-container-optimization-neu}"
 
@@ -23,6 +25,12 @@ az group create -l $LOCATION -n $RG_NAME
 
 echo "Deploy"
 az deployment group create --name azuredeploy --resource-group $RG_NAME --template-file $SCRIPT_DIR/main.bicep --parameters userObjectId="$AZ_USER_OBJECT_ID"
+
+DEPLOYMENT_OUTPUT=$(az deployment group show --name azuredeploy --resource-group $RG_NAME --query "properties.outputs" --output json)
+
+echo "Post output tasks"
+echo "import nginx:latest from Docker Hub to ACR"
+az acr import --name $(echo $DEPLOYMENT_OUTPUT | jq -r '.acrName.value') --source docker.io/library/nginx:latest --image nginx:latest --force
 
 echo "Get outputs"
 DEPLOYMENT_OUTPUT=$(az deployment group show --name azuredeploy --resource-group $RG_NAME --query "properties.outputs" --output json)

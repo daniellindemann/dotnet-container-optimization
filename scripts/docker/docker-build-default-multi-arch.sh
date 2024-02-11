@@ -8,6 +8,17 @@
 
 SCRIPT_DIR=$(dirname "$0")
 APP_DIR=$SCRIPT_DIR/../../src/DotnetContainerOptimization.SampleApp
-docker buildx build $@ \
-    --platform linux/amd64,linux/arm64 \
-    -t sample-app:1.0.0 -t sample-app:latest -f $APP_DIR/Dockerfile.default-multi-arch $APP_DIR
+
+# if --no-default-tags is passed, the default tags are not added
+if [[ $@ == *"--no-default-tags"* ]]; then
+    echo "Building image without default tags"
+    buildx_args=${@//--no-default-tags/}
+    docker buildx build $buildx_args \
+        --platform linux/amd64,linux/arm64 \
+        -f $APP_DIR/Dockerfile.default-multi-arch $APP_DIR
+else
+    docker buildx build $@ \
+        --platform linux/amd64,linux/arm64 \
+        -t sample-app:1.0.0 -t sample-app:latest \
+        -f $APP_DIR/Dockerfile.default-multi-arch $APP_DIR
+fi
