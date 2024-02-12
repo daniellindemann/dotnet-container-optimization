@@ -92,6 +92,9 @@ resource aks 'Microsoft.ContainerService/managedClusters@2023-11-01' = {
       upgradeChannel: 'patch'
       nodeOSUpgradeChannel: 'NodeImage'
     }
+    oidcIssuerProfile: {
+      enabled: true
+    }
     storageProfile: {
       blobCSIDriver: {
         enabled: false
@@ -107,7 +110,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2023-11-01' = {
       }
     }
   }
-
 }
 
 resource roleAssignmentKeyVaultAdministrator 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
