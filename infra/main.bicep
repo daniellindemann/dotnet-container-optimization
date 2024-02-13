@@ -4,9 +4,23 @@ param location string = resourceGroup().location
 @description('Enable purge protection for the key vault')
 param enableKeyVaultPurgeProtection bool = false
 
+@description('Tags for the resources')
+param tags object = {}
+
 @description('Object id of the user, who will be granted permissions')
 param userObjectId string
 
+var allTags = union(tags, {
+  ApplicationName: 'Dotnet Container Optimization'
+  Environment: 'demo'
+  Maintainer: 'dlindemann'
+  Setup: 'bicep'
+  TenantId: tenant().tenantId
+  SubscriptionId: subscription().subscriptionId
+  // aks specific tags
+  'auto-aks-start-at-utc': '06:00'
+  'auto-aks-stop-at-utc': '22:00'
+})
 var suffix = substring(uniqueString(resourceGroup().id), 0, 6)
 var keyVaultAdministratorRole = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '00482a5a-887f-4fb3-b363-3b7fe8e74483') // role name: Key Vault Administrator
 var acrPullRole = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d') // role name: AcrPull
@@ -14,6 +28,7 @@ var acrPullRole = subscriptionResourceId('Microsoft.Authorization/roleDefinition
 resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
   name: 'kv-co-${suffix}'
   location: location
+  tags: allTags
   properties: {
     sku: {
       family: 'A'
@@ -29,6 +44,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-07-01' = {
   name: 'crco${suffix}'
   location: location
+  tags: allTags
   sku: {
     name: 'Premium'
   }
@@ -47,6 +63,7 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-07-01' =
 resource aks 'Microsoft.ContainerService/managedClusters@2023-11-01' = {
   name: 'aks-co-${suffix}'
   location: location
+  tags: allTags
   sku: {
     name: 'Base'
     tier: 'Free'

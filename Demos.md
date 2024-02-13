@@ -158,7 +158,7 @@
         trivy image sample-app:1.0.0-patched
         ```
         
-## Sign images
+## Sign images (locally)
 
 - Ensure local registry is running
 - Run and explain scripts
@@ -184,7 +184,7 @@
     4. Create a trust policy to verify against
 
         ```bash
-        notation-import-trust-policy.sh
+        ./notation-import-trust-policy.sh
         ```
 
     5. Verify the image
@@ -193,11 +193,14 @@
         ./notation-verify-image.sh
         ```
 
-- (Optional) Show image signing and verification with Azure Key Vault and Azure Container Registry
-    - Ensure required Azure infra
-        - Run [`azuredeploy.sh`](infra/azuredeploy.sh)
-    - Explain [`notation-azure-keyvault-sign-image.sh`](scripts/notation-azure-keyvault/notation-azure-keyvault-sign-image.sh)
-    - Run [`notation-azure-keyvault-sign-image.sh`](scripts/notation-azure-keyvault/notation-azure-keyvault-sign-image.sh)
+## Sign images AKS
+
+- Ensure required Azure infra
+    - Run [`azuredeploy.sh`](infra/azuredeploy.sh)
+- Explain [`notation-azure-keyvault/notation-azure-keyvault-sign-image.sh`](scripts/notation-azure-keyvault/notation-azure-keyvault-sign-image.sh)
+- Run [`notation-azure-keyvault/notation-azure-keyvault-sign-image.sh`](scripts/notation-azure-keyvault/notation-azure-keyvault-sign-image.sh)
+- Configure image integrity check with AKS an Azure Policy
+    - [scripts/notation-azure-keyvault/aks-image-integrity.sh](scripts/notation-azure-keyvault/aks-image-integrity.sh)
 
 ---
 
